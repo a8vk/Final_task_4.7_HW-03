@@ -1,13 +1,15 @@
 from django.db import models
-from django.core.validators import MinValueValidator
+from django.shortcuts import reverse
 
 
-class Product(models.Model):
-    name = models.CharField(max_length=128)
-    description = models.CharField(max_length=256)
-    quantity = models.IntegerField(validators=[MinValueValidator(0, 'Quantity should be >= 0')])
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+class New(models.Model):
+    title = models.CharField(max_length=64)
+    text = models.TextField()
+    data_pub = models.DateTimeField(auto_now_add=True)
+    slug = models.SlugField(max_length=128, unique=True)
 
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'pk': self.pk})
 
-class Category(models.Model):
-    name = models.CharField(max_length=128)
+    def __str__(self):
+        return '{}'.format(self.title)

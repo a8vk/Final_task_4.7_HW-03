@@ -1,12 +1,18 @@
 from django.urls import path
-from .views import index, detail, uncos_view, articles_view, NewsListView, news_search
-from .views import NewsListView
+from .views import (
+    NewsListView,
+    NewDetailView,
+    UncosNewsListView,
+    ArticlesNewsListView,
+    NewsSearchView,
+    news_search,
+)
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('<int:pk>/', detail, name='detail'),
-    path('uncos/', uncos_view, name='uncos'),
-    path('articles/', articles_view, name='articles'),
-    path('news/', NewsListView.as_view(), name='news'),
-    path('search/', news_search, name='news_search'),  # добавленный URL-адрес для вида news_search
+    path('', NewsListView.as_view(), name='index'),
+    path('<int:pk>/', NewDetailView.as_view(), name='detail'),
+    path('uncos/', UncosNewsListView.as_view(), name='uncos'),
+    path('articles/', ArticlesNewsListView.as_view(), name='articles'),
+    path('news/', NewsSearchView.as_view(), name='news'),
+    path('search/', news_search, name='news_search'),
 ]

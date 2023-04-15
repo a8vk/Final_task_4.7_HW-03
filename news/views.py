@@ -1,33 +1,32 @@
 from django.shortcuts import render
-from django.views.generic.list import ListView
+from django.views.generic import ListView, DetailView
 from .models import New
 from .filters import NewFilter
 
 
-# Create your views here.
-def index(request):
-    news = New.objects.order_by('-data_pub')  # от более свежей к самой старой
-    return render(request, 'default.html', {'news': news})
-
-
-def detail(request, pk):
-    new = New.objects.get(pk=pk)
-    return render(request, 'detail.html', context={'new': new})
-
-
-def uncos_view(request):
-    return render(request, 'uncos.html', {})
-
-
-def articles_view(request):
-    return render(request, 'articles.html', {})
-
-
 class NewsListView(ListView):
     model = New
-    paginate_by = 10
-    ordering = ['-data_pub']
     template_name = 'default.html'
+    context_object_name = 'news'
+    ordering = ['-data_pub']
+    paginate_by = 10
+
+
+class NewDetailView(DetailView):
+    model = New
+    template_name = 'detail.html'
+    context_object_name = 'new'
+
+
+class UncosNewsListView(ListView):
+    model = New
+    template_name = 'uncos.html'
+    context_object_name = 'news'
+    ordering = ['-data_pub']
+    paginate_by = 10
+
+    def get_queryset(self):
+        return super().get_queryset().filter(category='uncos')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -38,6 +37,30 @@ class NewsListView(ListView):
         page_range = range(start_index, end_index + 1)
         context['page_range'] = page_range
         return context
+
+class ArticlesNewsListView(ListView):
+    model = New
+    template_name = 'articles.html'
+    context_object_name = 'news'
+    ordering = ['-data_pub']
+    paginate_by = 10
+
+    def get_queryset(self):
+        return super().get_queryset().filter(category='articles')
+
+
+class NewsSearchView(ListView):
+    model = New
+    template_name = 'news_search.html'
+    context_object_name = 'news'
+    ordering = ['-data_pub']
+    paginate_by = 10
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return New.objects.filter(title__icontains=query)
+        return New.objects.all()
 
 
 def news_search(request):

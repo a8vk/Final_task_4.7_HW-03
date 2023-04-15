@@ -1,10 +1,14 @@
 {% extends 'default.html' %}
 
-{% block title %}
-{% load filters %}
-<h3>{{ new.title|censor }}</h3>
-<p><i>{{ new.text|censor }} </i></p>
-{# дата загрузки в формате день.месяц.год #}
-<p>дата загрузки <b>{{ new.data_pub|date:"d.m.Y" }}</b></p>
-<h3>Статьи...</h3>
+{% block content %}
+    {% if news %}
+        <h1>Статьи</h1>
+        <ul>
+            {% for new in news %}
+                <li><a href="{% url 'detail' new.pk %}">{{ new.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>К сожалению, статей в данной категории нет.</p>
+    {% endif %}
 {% endblock %}

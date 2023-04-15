@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .filters import NewsFilter
 from .models import New
 from django.core.paginator import Paginator
 from django.views.generic.list import ListView
@@ -38,3 +39,9 @@ class NewsListView(ListView):
         page_range = range(start_index, end_index + 1)
         context['page_range'] = page_range
         return context
+
+
+def news_search(request):
+    news_list = New.objects.all()
+    news_filter = NewsFilter(request.GET, queryset=news_list)
+    return render(request, 'news_search.html', {'filter': news_filter})

@@ -3,9 +3,12 @@ from django.shortcuts import reverse
 
 
 class New(models.Model):
+    CATEGORIES_CHOICES = [('uncos', 'Новости'), ('articles', 'Статьи')]
+
     title = models.CharField(max_length=64)
     text = models.TextField()
-    data_pub = models.DateTimeField(auto_now_add=True)
+    category = models.CharField(max_length=10, choices=CATEGORIES_CHOICES, default='uncos')
+    data_pub = models.DateField(auto_now_add=True)
     slug = models.SlugField(max_length=128, unique=True)
 
     def get_absolute_url(self):

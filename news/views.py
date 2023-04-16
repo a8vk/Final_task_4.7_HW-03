@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 from .models import New
 from .filters import NewFilter
 
@@ -38,6 +40,7 @@ class UncosNewsListView(ListView):
         context['page_range'] = page_range
         return context
 
+
 class ArticlesNewsListView(ListView):
     model = New
     template_name = 'articles.html'
@@ -67,3 +70,39 @@ def news_search(request):
     news_list = New.objects.all()
     news_filter = NewFilter(request.GET, queryset=news_list)
     return render(request, 'news_search.html', {'filter': news_filter, 'news_list': news_filter.qs})
+
+
+class UncosCreateView(CreateView):
+    model = New
+    fields = ['title', 'content', 'category']
+    template_name = 'news_form.html'
+
+
+class UncosUpdateView(UpdateView):
+    model = New
+    fields = ['title', 'content', 'category']
+    template_name = 'news_form.html'
+
+
+class UncosDeleteView(DeleteView):
+    model = New
+    success_url = reverse_lazy('index')
+    template_name = 'news_confirm_delete.html'
+
+
+class ArticlesCreateView(CreateView):
+    model = New
+    fields = ['title', 'content', 'category']
+    template_name = 'articles_form.html'
+
+
+class ArticlesUpdateView(UpdateView):
+    model = New
+    fields = ['title', 'content', 'category']
+    template_name = 'articles_form.html'
+
+
+class ArticlesDeleteView(DeleteView):
+    model = New
+    success_url = reverse_lazy('articles')
+    template_name = 'articles_confirm_delete.html'

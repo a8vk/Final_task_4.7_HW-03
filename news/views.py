@@ -74,14 +74,14 @@ def news_search(request):
 
 class UncosCreateView(CreateView):
     model = New
-    fields = ['title', 'content', 'category']
+    fields = ['title', 'text', 'category']
     template_name = 'news_form.html'
 
 
 class UncosUpdateView(UpdateView):
     model = New
-    fields = ['title', 'content', 'category']
-    template_name = 'news_form.html'
+    fields = ['title', 'text', 'category']
+    template_name = 'news_edit.html'
 
 
 class UncosDeleteView(DeleteView):
@@ -92,14 +92,14 @@ class UncosDeleteView(DeleteView):
 
 class ArticlesCreateView(CreateView):
     model = New
-    fields = ['title', 'content', 'category']
+    fields = ['title', 'text', 'category']
     template_name = 'articles_form.html'
 
 
 class ArticlesUpdateView(UpdateView):
     model = New
-    fields = ['title', 'content', 'category']
-    template_name = 'articles_form.html'
+    fields = ['title', 'text', 'category']
+    template_name = 'articles_edit.html'
 
 
 class ArticlesDeleteView(DeleteView):

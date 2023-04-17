@@ -10,7 +10,6 @@ class New(models.Model):
     text = models.TextField()
     category = models.CharField(max_length=10, choices=CATEGORIES_CHOICES, default='uncos')
     data_pub = models.DateField(auto_now_add=True)
-    slug = models.SlugField(max_length=128, unique=True)
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'pk': self.pk})
